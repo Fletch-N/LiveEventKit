@@ -1,3 +1,4 @@
+using Application.Common.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Persistence;
 
 public class DataContext(DbContextOptions<DataContext> options)
-    : IdentityDbContext<KitUser, IdentityRole<Guid>, Guid>(options)
+    : IdentityDbContext<KitUser, IdentityRole<Guid>, Guid>(options), IApplicationDbContext
 {
-    public DbSet<KitEvent> KitEvents => Set<KitEvent>();
-    public DbSet<KitSession> KitSessions => Set<KitSession>();
-    public DbSet<KitVideo> KitVideos => Set<KitVideo>();
-    public DbSet<KitChat> KitChats => Set<KitChat>();
+    public DbSet<KitEvent> Events => Set<KitEvent>();
+    public DbSet<KitSession> Sessions => Set<KitSession>();
+    public DbSet<KitVideo> Videos => Set<KitVideo>();
+    public DbSet<KitChat> Chats => Set<KitChat>();
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
     public DbSet<ChatEvent> ChatEvents => Set<ChatEvent>();
     public DbSet<ModerationEvent> ModerationEvents => Set<ModerationEvent>();

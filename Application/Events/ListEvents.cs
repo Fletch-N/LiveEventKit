@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Events;
 
-public static class GetEvent
+public static class ListEvents
 {
-    public sealed record Request(Guid Id);
+    public sealed record Request;
 
     public sealed record Response(
         Guid Id,
@@ -16,17 +16,19 @@ public static class GetEvent
 
     public sealed class Handler(IApplicationDbContext context)
     {
-        public async Task<Response?> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<Response>> Handle(
+            Request request,
+            CancellationToken cancellationToken)
         {
             return await context.Events
-                .Where(x => x.Id == request.Id)
+                .OrderBy(x => x.StartDate)
                 .Select(x => new Response(
                     x.Id,
                     x.Title,
                     x.Description,
                     x.StartDate,
                     x.EndDate))
-                .FirstOrDefaultAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
         }
     }
 }
