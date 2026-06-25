@@ -50,6 +50,14 @@ coverage.*
 **/appsettings.*.Local.json
 **/secrets.json
 
+## Local SQLite databases
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
 ## OS files
 .DS_Store
 Thumbs.db

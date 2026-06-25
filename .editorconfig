@@ -8,3 +8,8 @@ indent_style = space
 indent_size = 4
 
 csharp_style_namespace_declarations = file_scoped:warning
+
+[Persistence/Migrations/*.cs]
+generated_code = true
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1861.severity = none
