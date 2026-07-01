@@ -1,5 +1,7 @@
 using Application.Common.Interfaces;
+using Application.Common.Models;
 using Microsoft.EntityFrameworkCore;
+using static Application.Common.Utilities;
 
 namespace Application.Users;
 
@@ -7,18 +9,18 @@ public static class UpdateUserProfile
 {
     public sealed record Request(
         Guid Id,
-        string FirstName,
-        string LastName,
-        string? Bio,
-        string? Industry,
-        string? Organization,
-        string? Title,
-        string? Country,
-        string? State,
-        string? City,
-        string? Interests,
-        string? Pronouns,
-        string? ProfileImage);
+        UpdateField<string> FirstName = default,
+        UpdateField<string> LastName = default,
+        UpdateField<string?> Bio = default,
+        UpdateField<string?> Industry = default,
+        UpdateField<string?> Organization = default,
+        UpdateField<string?> Title = default,
+        UpdateField<string?> Country = default,
+        UpdateField<string?> State = default,
+        UpdateField<string?> City = default,
+        UpdateField<string?> Interests = default,
+        UpdateField<string?> Pronouns = default,
+        UpdateField<string?> ProfileImage = default);
 
     public sealed record Response(
         Guid Id,
@@ -47,18 +49,65 @@ public static class UpdateUserProfile
                 return null;
             }
 
-            user.FirstName = request.FirstName.Trim();
-            user.LastName = request.LastName.Trim();
-            user.Bio = Normalize(request.Bio);
-            user.Industry = Normalize(request.Industry);
-            user.Organization = Normalize(request.Organization);
-            user.Title = Normalize(request.Title);
-            user.Country = Normalize(request.Country);
-            user.State = Normalize(request.State);
-            user.City = Normalize(request.City);
-            user.Interests = Normalize(request.Interests);
-            user.Pronouns = Normalize(request.Pronouns);
-            user.ProfileImage = string.IsNullOrWhiteSpace(request.ProfileImage) ? null : new Uri(request.ProfileImage);
+            if (request.FirstName.HasValue)
+            {
+                user.FirstName = NormalizeRequired(request.FirstName.Value, nameof(request.FirstName));
+            }
+
+            if (request.LastName.HasValue)
+            {
+                user.LastName = NormalizeRequired(request.LastName.Value, nameof(request.LastName));
+            }
+
+            if (request.Bio.HasValue)
+            {
+                user.Bio = Normalize(request.Bio.Value);
+            }
+
+            if (request.Industry.HasValue)
+            {
+                user.Industry = Normalize(request.Industry.Value);
+            }
+
+            if (request.Organization.HasValue)
+            {
+                user.Organization = Normalize(request.Organization.Value);
+            }
+
+            if (request.Title.HasValue)
+            {
+                user.Title = Normalize(request.Title.Value);
+            }
+
+            if (request.Country.HasValue)
+            {
+                user.Country = Normalize(request.Country.Value);
+            }
+
+            if (request.State.HasValue)
+            {
+                user.State = Normalize(request.State.Value);
+            }
+
+            if (request.City.HasValue)
+            {
+                user.City = Normalize(request.City.Value);
+            }
+
+            if (request.Interests.HasValue)
+            {
+                user.Interests = Normalize(request.Interests.Value);
+            }
+
+            if (request.Pronouns.HasValue)
+            {
+                user.Pronouns = Normalize(request.Pronouns.Value);
+            }
+
+            if (request.ProfileImage.HasValue)
+            {
+                user.ProfileImage = string.IsNullOrWhiteSpace(request.ProfileImage.Value) ? null : new Uri(request.ProfileImage.Value);
+            }
 
             await context.SaveChangesAsync(cancellationToken);
 
@@ -79,8 +128,4 @@ public static class UpdateUserProfile
         }
     }
 
-    private static string? Normalize(string? value)
-    {
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
-    }
 }

@@ -1,3 +1,4 @@
+using static Application.Common.Utilities;
 using Application.Common.Interfaces;
 using Domain;
 
@@ -34,14 +35,6 @@ public static class CreateEvent
             await context.SaveChangesAsync(cancellationToken);
 
             return new Response(entity.Id);
-        }
-    }
-
-    private static void ValidateDates(DateTimeOffset startDate, DateTimeOffset endDate)
-    {
-        if (endDate < startDate)
-        {
-            throw new ArgumentException("EndDate must be greater than or equal to StartDate.");
         }
     }
 }

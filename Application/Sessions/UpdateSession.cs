@@ -1,6 +1,8 @@
 using Application.Common.Interfaces;
+using Application.Common.Models;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using static Application.Common.Utilities;
 
 namespace Application.Sessions;
 
@@ -8,16 +10,16 @@ public static class UpdateSession
 {
     public sealed record Request(
         Guid Id,
-        Guid EventId,
-        Guid SpeakerId,
-        string Title,
-        string Description,
-        string Category,
-        string? Sponsor,
-        DateTimeOffset StartTime,
-        TimeSpan Duration,
-        SessionAccessLevel AccessLevel,
-        string? Image);
+        UpdateField<Guid> EventId = default,
+        UpdateField<Guid> SpeakerId = default,
+        UpdateField<string> Title = default,
+        UpdateField<string> Description = default,
+        UpdateField<string> Category = default,
+        UpdateField<string?> Sponsor = default,
+        UpdateField<DateTimeOffset> StartTime = default,
+        UpdateField<TimeSpan> Duration = default,
+        UpdateField<SessionAccessLevel> AccessLevel = default,
+        UpdateField<string?> Image = default);
 
     public sealed record Response(
         Guid Id,
@@ -36,8 +38,6 @@ public static class UpdateSession
     {
         public async Task<Response?> Handle(Request request, CancellationToken cancellationToken)
         {
-            ValidateDuration(request.Duration);
-
             KitSession? entity = await context.Sessions
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
@@ -46,16 +46,60 @@ public static class UpdateSession
                 return null;
             }
 
-            entity.EventId = request.EventId;
-            entity.SpeakerId = request.SpeakerId;
-            entity.Title = request.Title.Trim();
-            entity.Description = request.Description.Trim();
-            entity.Category = request.Category.Trim();
-            entity.Sponsor = string.IsNullOrWhiteSpace(request.Sponsor) ? null : request.Sponsor.Trim();
-            entity.StartTime = request.StartTime;
-            entity.Duration = request.Duration;
-            entity.AccessLevel = request.AccessLevel;
-            entity.Image = string.IsNullOrWhiteSpace(request.Image) ? null : new Uri(request.Image);
+            TimeSpan duration = request.Duration.HasValue ? request.Duration.Value : entity.Duration;
+
+            ValidateDuration(duration);
+
+            if (request.EventId.HasValue)
+            {
+                entity.EventId = request.EventId.Value;
+            }
+
+            if (request.SpeakerId.HasValue)
+            {
+                entity.SpeakerId = request.SpeakerId.Value;
+            }
+
+            if (request.Title.HasValue)
+            {
+                entity.Title = NormalizeRequired(request.Title.Value, nameof(request.Title));
+            }
+
+            if (request.Description.HasValue)
+            {
+                entity.Description = NormalizeRequired(request.Description.Value, nameof(request.Description));
+            }
+
+            if (request.Category.HasValue)
+            {
+                entity.Category = NormalizeRequired(request.Category.Value, nameof(request.Category));
+            }
+
+            if (request.Sponsor.HasValue)
+            {
+                entity.Sponsor = Normalize(request.Sponsor.Value);
+            }
+
+            if (request.StartTime.HasValue)
+            {
+                entity.StartTime = request.StartTime.Value;
+            }
+
+            if (request.Duration.HasValue)
+            {
+                entity.Duration = request.Duration.Value;
+            }
+
+            if (request.AccessLevel.HasValue)
+            {
+                entity.AccessLevel = request.AccessLevel.Value;
+            }
+
+            if (request.Image.HasValue)
+            {
+                entity.Image = string.IsNullOrWhiteSpace(request.Image.Value) ? null : new Uri(request.Image.Value);
+            }
+
             entity.UpdatedAt = DateTimeOffset.UtcNow;
 
             await context.SaveChangesAsync(cancellationToken);
@@ -72,14 +116,6 @@ public static class UpdateSession
                 entity.Duration,
                 entity.AccessLevel.ToString(),
                 entity.Image?.ToString());
-        }
-    }
-
-    private static void ValidateDuration(TimeSpan duration)
-    {
-        if (duration <= TimeSpan.Zero)
-        {
-            throw new ArgumentException("Duration must be greater than zero.");
         }
     }
 }

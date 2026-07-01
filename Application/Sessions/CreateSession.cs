@@ -1,3 +1,4 @@
+using static Application.Common.Utilities;
 using Application.Common.Interfaces;
 using Domain;
 
@@ -45,14 +46,6 @@ public static class CreateSession
             await context.SaveChangesAsync(cancellationToken);
 
             return new Response(entity.Id);
-        }
-    }
-
-    private static void ValidateDuration(TimeSpan duration)
-    {
-        if (duration <= TimeSpan.Zero)
-        {
-            throw new ArgumentException("Duration must be greater than zero.");
         }
     }
 }
