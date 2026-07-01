@@ -9,5 +9,6 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="11.0.0-preview.5.26302.115" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="11.0.0-preview.5.26302.115" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Stores" Version="11.0.0-preview.5.26302.115" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="3.5.4" />
   </ItemGroup>
 </Project>

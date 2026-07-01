@@ -8,11 +8,27 @@ using Persistence;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+const string CorsPolicyName = "ClientApp";
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi()
     .AddApplication()
     .AddPersistence(builder.Configuration, builder.Environment.ContentRootPath);
+
+string[] allowedCorsOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? [];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CorsPolicyName, policy =>
+    {
+        policy.WithOrigins(allowedCorsOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.Configure<IdentitySeedOptions>(
     builder.Configuration.GetSection(IdentitySeedOptions.SectionName));
@@ -37,8 +53,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
+app.UseCors(CorsPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 
