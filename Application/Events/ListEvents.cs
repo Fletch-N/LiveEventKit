@@ -5,7 +5,11 @@ namespace Application.Events;
 
 public static class ListEvents
 {
-    public sealed record Request;
+    public sealed record Request(
+        string? Search = null,
+        int Page = 0,
+        int Limit = 25
+    );
 
     public sealed record Response(
         Guid Id,
@@ -21,7 +25,10 @@ public static class ListEvents
             CancellationToken cancellationToken)
         {
             return await context.Events
+                .AsNoTracking()
                 .OrderBy(x => x.StartDate)
+                .Skip(request.Page * request.Limit)
+                .Take(request.Limit)
                 .Select(x => new Response(
                     x.Id,
                     x.Title,

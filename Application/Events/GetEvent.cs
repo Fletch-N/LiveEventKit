@@ -19,6 +19,7 @@ public static class GetEvent
         public async Task<Response?> Handle(Request request, CancellationToken cancellationToken)
         {
             return await context.Events
+                .AsNoTracking()
                 .Where(x => x.Id == request.Id)
                 .Select(x => new Response(
                     x.Id,

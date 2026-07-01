@@ -4,13 +4,6 @@ namespace API.Endpoints;
 
 public static class EventEndpoints
 {
-    private sealed record UpdateEventBody(
-        string Title,
-        string Description,
-        string? Image,
-        DateTimeOffset StartDate,
-        DateTimeOffset EndDate);
-
     public static RouteGroupBuilder MapEventEndpoints(this RouteGroupBuilder group)
     {
         group.MapGet("/", ListEvents)
@@ -20,13 +13,16 @@ public static class EventEndpoints
             .WithName("GetEventById");
 
         group.MapPost("/", CreateEvent)
-            .WithName("CreateEvent");
+            .WithName("CreateEvent")
+            .RequireAuthorization("EventWriteAccess");
 
         group.MapPut("/{id:guid}", UpdateEvent)
-            .WithName("UpdateEvent");
+            .WithName("UpdateEvent")
+            .RequireAuthorization("EventWriteAccess");
 
         group.MapDelete("/{id:guid}", DeleteEvent)
-            .WithName("DeleteEvent");
+            .WithName("DeleteEvent")
+            .RequireAuthorization("EventWriteAccess");
 
         return group;
     }
@@ -74,20 +70,14 @@ public static class EventEndpoints
 
     private static async Task<IResult> UpdateEvent(
         Guid id,
-        UpdateEventBody body,
+        UpdateEvent.Request request,
         UpdateEvent.Handler handler,
         CancellationToken cancellationToken)
     {
         try
         {
             UpdateEvent.Response? result = await handler.Handle(
-                new UpdateEvent.Request(
-                    id,
-                    body.Title,
-                    body.Description,
-                    body.Image,
-                    body.StartDate,
-                    body.EndDate),
+                request with { Id = id },
                 cancellationToken);
 
             return result is null

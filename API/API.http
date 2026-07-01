@@ -1,11 +1,96 @@
 @API_HostAddress = http://localhost:5164
+@AdminEmail = admin@liveeventkit.local
+@AdminPassword = Admin123!
+@AccessToken = replace-me
 
 GET {{API_HostAddress}}/openapi/v1.json
 Accept: application/json
 
 ###
 
-GET {{API_HostAddress}}/weatherforecast/
+POST {{API_HostAddress}}/api/auth/login?useCookies=false
+Content-Type: application/json
+
+{
+  "email": "{{AdminEmail}}",
+  "password": "{{AdminPassword}}"
+}
+
+###
+
+POST {{API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "speaker1@liveeventkit.local",
+  "password": "Speaker123!"
+}
+
+###
+
+GET {{API_HostAddress}}/api/auth/me
+Authorization: Bearer {{AccessToken}}
 Accept: application/json
 
 ###
+
+POST {{API_HostAddress}}/api/auth/logout
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{}
+
+###
+
+GET {{API_HostAddress}}/api/events
+Accept: application/json
+
+###
+
+GET {{API_HostAddress}}/api/sessions
+Accept: application/json
+
+###
+
+GET {{API_HostAddress}}/api/users
+Authorization: Bearer {{AccessToken}}
+Accept: application/json
+
+###
+
+GET {{API_HostAddress}}/api/users/me
+Authorization: Bearer {{AccessToken}}
+Accept: application/json
+
+###
+
+POST {{API_HostAddress}}/api/events
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "title": "Launch Keynote",
+  "description": "Opening session for the event platform relaunch.",
+  "image": null,
+  "startDate": "2026-08-15T14:00:00Z",
+  "endDate": "2026-08-15T15:00:00Z"
+}
+
+###
+
+POST {{API_HostAddress}}/api/sessions
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "eventId": "replace-event-id",
+  "speakerId": "replace-speaker-id",
+  "title": "Session One",
+  "description": "First session",
+  "category": "Keynote",
+  "sponsor": null,
+  "startTime": "2026-08-15T16:00:00Z",
+  "duration": "01:00:00",
+  "accessLevel": 0,
+  "image": null
+}
