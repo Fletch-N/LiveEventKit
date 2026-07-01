@@ -31,6 +31,8 @@ public sealed class UpdateFieldJsonConverterFactory : JsonConverterFactory
 
     private sealed class UpdateFieldJsonConverter<T> : JsonConverter<UpdateField<T>>
     {
+        public override bool HandleNull => true;
+
         public override UpdateField<T> Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
