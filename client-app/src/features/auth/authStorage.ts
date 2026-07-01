@@ -18,7 +18,9 @@ const isAuthSession = (value: unknown): value is AuthSession => {
 }
 
 export const readStoredSession = () => {
-  const storedSession = window.localStorage.getItem(AUTH_SESSION_STORAGE_KEY)
+  const storedSession =
+    window.localStorage.getItem(AUTH_SESSION_STORAGE_KEY) ??
+    window.sessionStorage.getItem(AUTH_SESSION_STORAGE_KEY)
 
   if (!storedSession) {
     return null
@@ -32,10 +34,18 @@ export const readStoredSession = () => {
   }
 }
 
-export const saveStoredSession = (session: AuthSession) => {
-  window.localStorage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify(session))
+export const saveStoredSession = (
+  session: AuthSession,
+  remember = true,
+) => {
+  const storage = remember ? window.localStorage : window.sessionStorage
+  const otherStorage = remember ? window.sessionStorage : window.localStorage
+
+  storage.setItem(AUTH_SESSION_STORAGE_KEY, JSON.stringify(session))
+  otherStorage.removeItem(AUTH_SESSION_STORAGE_KEY)
 }
 
 export const clearStoredSession = () => {
   window.localStorage.removeItem(AUTH_SESSION_STORAGE_KEY)
+  window.sessionStorage.removeItem(AUTH_SESSION_STORAGE_KEY)
 }

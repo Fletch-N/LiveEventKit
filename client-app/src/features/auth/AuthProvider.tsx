@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 import { AuthContext, type AuthContextValue } from './AuthContext'
+import { authApi } from './api'
 import {
   clearStoredSession,
   readStoredSession,
@@ -12,36 +13,20 @@ type AuthProviderProps = {
   children: ReactNode
 }
 
-const getDisplayName = (email: string) => {
-  const [name] = email.split('@')
-  return name || 'Event Manager'
-}
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<AuthSession | null>(() =>
     readStoredSession(),
   )
 
   const value = useMemo<AuthContextValue>(() => {
-    const login = ({ email, remember }: LoginCredentials) => {
-      const nextSession: AuthSession = {
-        accessToken: `local-session-${Date.now()}`,
-        user: {
-          email,
-          name: getDisplayName(email),
-        },
-      }
-
+    const login = async (credentials: LoginCredentials) => {
+      const nextSession = await authApi.login(credentials)
       setSession(nextSession)
-
-      if (remember) {
-        saveStoredSession(nextSession)
-      } else {
-        clearStoredSession()
-      }
+      saveStoredSession(nextSession, credentials.remember)
     }
 
-    const logout = () => {
+    const logout = async () => {
+      await authApi.logout().catch(() => undefined)
       setSession(null)
       clearStoredSession()
     }

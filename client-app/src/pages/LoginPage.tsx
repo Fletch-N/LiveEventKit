@@ -1,4 +1,4 @@
-import { type SubmitEvent, useState } from 'react'
+import { type FormEvent, useState } from 'react'
 import {
   Button,
   Center,
@@ -11,6 +11,7 @@ import {
   Title,
 } from '@mantine/core'
 import { Navigate, useLocation, useNavigate } from 'react-router'
+import { ApiError } from '../lib/agent'
 import { useAuth } from '../features/auth/useAuth'
 
 type RedirectState = {
@@ -28,6 +29,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(true)
   const [formError, setFormError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const redirectState = location.state as RedirectState | null
   const redirectPath = redirectState?.from?.pathname ?? '/'
@@ -39,7 +41,7 @@ const LoginPage = () => {
     return <Navigate to={redirectTo} replace />
   }
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!email.trim() || !password) {
@@ -47,8 +49,23 @@ const LoginPage = () => {
       return
     }
 
-    login({ email: email.trim(), password, remember })
-    navigate(redirectTo, { replace: true })
+    setIsSubmitting(true)
+    setFormError(null)
+
+    try {
+      await login({ email: email.trim(), password, remember })
+      navigate(redirectTo, { replace: true })
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        setFormError('Invalid email or password.')
+      } else {
+        setFormError(
+          error instanceof Error ? error.message : 'Unable to sign in.',
+        )
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -94,7 +111,7 @@ const LoginPage = () => {
                   setRemember(event.currentTarget.checked)
                 }
               />
-              <Button type="submit" fullWidth>
+              <Button type="submit" loading={isSubmitting} fullWidth>
                 Sign in
               </Button>
             </Stack>
