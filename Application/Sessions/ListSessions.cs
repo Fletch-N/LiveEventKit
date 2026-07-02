@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sessions;
@@ -17,14 +18,14 @@ public static class ListSessions
         string? Sponsor,
         DateTime StartTime,
         TimeSpan Duration,
-        string AccessLevel,
+        SessionAccessLevel AccessLevel,
         string? Image);
 
     public sealed class Handler(IApplicationDbContext context)
     {
         public async Task<IReadOnlyList<Response>> Handle(Request request, CancellationToken cancellationToken)
         {
-            IQueryable<Domain.KitSession> query = context.Sessions.AsNoTracking();
+            IQueryable<KitSession> query = context.Sessions.AsNoTracking();
 
             if (request.EventId.HasValue)
             {
@@ -43,7 +44,7 @@ public static class ListSessions
                     x.Sponsor,
                     x.StartTime,
                     x.Duration,
-                    x.AccessLevel.ToString(),
+                    x.AccessLevel,
                     x.Image == null ? null : x.Image.ToString()))
                 .ToListAsync(cancellationToken);
         }

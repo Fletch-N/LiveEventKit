@@ -33,7 +33,7 @@ public static class UpdateSession
         string? Sponsor,
         DateTime StartTime,
         TimeSpan Duration,
-        string AccessLevel,
+        SessionAccessLevel AccessLevel,
         string? Image);
 
     public sealed class Handler(IApplicationDbContext context)
@@ -116,7 +116,7 @@ public static class UpdateSession
                 entity.Sponsor,
                 entity.StartTime,
                 entity.Duration,
-                entity.AccessLevel.ToString(),
+                entity.AccessLevel,
                 entity.Image?.ToString());
         }
     }

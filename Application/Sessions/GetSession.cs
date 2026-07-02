@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sessions;
@@ -17,7 +18,7 @@ public static class GetSession
         string? Sponsor,
         DateTime StartTime,
         TimeSpan Duration,
-        string AccessLevel,
+        SessionAccessLevel AccessLevel,
         string? Image,
         Guid? VideoId,
         Guid? ChatId);
@@ -39,7 +40,7 @@ public static class GetSession
                     x.Sponsor,
                     x.StartTime,
                     x.Duration,
-                    x.AccessLevel.ToString(),
+                    x.AccessLevel,
                     x.Image == null ? null : x.Image.ToString(),
                     x.Video != null ? x.Video.Id : null,
                     x.Chat != null ? x.Chat.Id : null))
