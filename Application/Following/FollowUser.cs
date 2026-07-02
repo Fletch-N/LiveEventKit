@@ -31,7 +31,7 @@ public static class FollowUser
             {
                 ObserverId = request.ObserverId,
                 TargetId = request.TargetId,
-                FollowedAt = DateTimeOffset.UtcNow
+                FollowedAt = DateTime.UtcNow
             });
 
             await context.SaveChangesAsync(cancellationToken);

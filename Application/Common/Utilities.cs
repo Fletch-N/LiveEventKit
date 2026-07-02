@@ -20,7 +20,7 @@ public static class Utilities
         }
     }
 
-    public static void ValidateDates(DateTimeOffset startDate, DateTimeOffset endDate)
+    public static void ValidateDates(DateTime startDate, DateTime endDate)
     {
         if (endDate < startDate)
         {

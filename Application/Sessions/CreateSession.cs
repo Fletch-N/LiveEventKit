@@ -13,7 +13,7 @@ public static class CreateSession
         string Description,
         string Category,
         string? Sponsor,
-        DateTimeOffset StartTime,
+        DateTime StartTime,
         TimeSpan Duration,
         SessionAccessLevel AccessLevel,
         string? Image);
@@ -39,7 +39,7 @@ public static class CreateSession
                 Duration = request.Duration,
                 AccessLevel = request.AccessLevel,
                 Image = string.IsNullOrWhiteSpace(request.Image) ? null : new Uri(request.Image),
-                CreatedAt = DateTimeOffset.UtcNow
+                CreatedAt = DateTime.UtcNow
             };
 
             context.Sessions.Add(entity);

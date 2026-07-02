@@ -13,8 +13,8 @@ public static class GetSessionAttendees
         string FirstName,
         string LastName,
         string Status,
-        DateTimeOffset RegisteredAt,
-        DateTimeOffset? CheckedInAt);
+        DateTime RegisteredAt,
+        DateTime? CheckedInAt);
 
     public sealed class Handler(IApplicationDbContext context)
     {

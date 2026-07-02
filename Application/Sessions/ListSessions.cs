@@ -15,7 +15,7 @@ public static class ListSessions
         string Description,
         string Category,
         string? Sponsor,
-        DateTimeOffset StartTime,
+        DateTime StartTime,
         TimeSpan Duration,
         string AccessLevel,
         string? Image);

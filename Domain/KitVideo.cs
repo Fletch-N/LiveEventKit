@@ -16,7 +16,7 @@ public class KitVideo : Auditable
     public KitSession Session { get; set; } = null!;
     public required Uri PlaybackUrl { get; set; }
     public LiveStreamStatus Status { get; set; }
-    public DateTimeOffset? StartedAt { get; set; }
-    public DateTimeOffset? EndedAt { get; set; }
+    public DateTime? StartedAt { get; set; }
+    public DateTime? EndedAt { get; set; }
     public TimeSpan? TotalDuration { get; set; }
 }

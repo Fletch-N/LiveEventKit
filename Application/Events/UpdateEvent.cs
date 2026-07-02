@@ -13,8 +13,8 @@ public static class UpdateEvent
         public UpdateField<string> Title { get; init; }
         public UpdateField<string> Description { get; init; }
         public UpdateField<string?> Image { get; init; }
-        public UpdateField<DateTimeOffset> StartDate { get; init; }
-        public UpdateField<DateTimeOffset> EndDate { get; init; }
+        public UpdateField<DateTime> StartDate { get; init; }
+        public UpdateField<DateTime> EndDate { get; init; }
     }
 
     public sealed record Response(
@@ -22,8 +22,8 @@ public static class UpdateEvent
         string Title,
         string Description,
         string? Image,
-        DateTimeOffset StartDate,
-        DateTimeOffset EndDate);
+        DateTime StartDate,
+        DateTime EndDate);
 
     public sealed class Handler(IApplicationDbContext context)
     {
@@ -37,8 +37,8 @@ public static class UpdateEvent
                 return null;
             }
 
-            DateTimeOffset startDate = request.StartDate.HasValue ? request.StartDate.Value : entity.StartDate;
-            DateTimeOffset endDate = request.EndDate.HasValue ? request.EndDate.Value : entity.EndDate;
+            DateTime startDate = request.StartDate.HasValue ? request.StartDate.Value : entity.StartDate;
+            DateTime endDate = request.EndDate.HasValue ? request.EndDate.Value : entity.EndDate;
 
             ValidateDates(startDate, endDate);
 
@@ -67,7 +67,7 @@ public static class UpdateEvent
                 entity.EndDate = request.EndDate.Value;
             }
 
-            entity.UpdatedAt = DateTimeOffset.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync(cancellationToken);
 

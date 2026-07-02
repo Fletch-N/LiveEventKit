@@ -8,5 +8,5 @@ public class UserFollowing
     public Guid TargetId { get; set; }
     public KitUser Target { get; set; } = null!;
 
-    public DateTimeOffset FollowedAt { get; set; }
+    public DateTime FollowedAt { get; set; }
 }

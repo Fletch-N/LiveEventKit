@@ -20,7 +20,7 @@ public static class RegisterAttendance
             if (existing is not null)
             {
                 existing.Status = AttendingStatus.Registered;
-                existing.RegisteredAt = DateTimeOffset.UtcNow;
+                existing.RegisteredAt = DateTime.UtcNow;
                 existing.CheckedInAt = null;
                 await context.SaveChangesAsync(cancellationToken);
                 return false;
@@ -30,7 +30,7 @@ public static class RegisterAttendance
             {
                 UserId = request.UserId,
                 SessionId = request.SessionId,
-                RegisteredAt = DateTimeOffset.UtcNow,
+                RegisteredAt = DateTime.UtcNow,
                 Status = AttendingStatus.Registered
             });
 

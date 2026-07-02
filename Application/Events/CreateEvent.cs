@@ -10,8 +10,8 @@ public static class CreateEvent
         string Title,
         string Description,
         string? Image,
-        DateTimeOffset StartDate,
-        DateTimeOffset EndDate);
+        DateTime StartDate,
+        DateTime EndDate);
 
     public sealed record Response(Guid Id);
 

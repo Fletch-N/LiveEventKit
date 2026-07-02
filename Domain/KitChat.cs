@@ -8,7 +8,7 @@ public class ChatMessage
     public bool IsHidden { get; set; }
     public Guid AuthorId { get; set; }
     public KitUser Author { get; set; } = null!;
-    public DateTimeOffset TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
 
 public enum ChatEventType
@@ -24,7 +24,7 @@ public class ChatEvent
     public Guid UserId { get; set; }
     public KitUser User { get; set; } = null!;
     public ChatEventType Type { get; set; }
-    public DateTimeOffset TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 
 }
 
@@ -43,7 +43,7 @@ public class ModerationEvent
     public Guid ChatId { get; set; }
     public Guid TargetId { get; set; }
     public ModerationCommand Command { get; set; }
-    public DateTimeOffset TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
 
 public enum ShowControlCommand
@@ -58,7 +58,7 @@ public class ShowControl
     public Guid Id { get; set; }
     public Guid ChatId { get; set; }
     public ShowControlCommand Command { get; set; }
-    public DateTimeOffset TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 }
 
 public class KitChat

@@ -16,8 +16,8 @@ public class UserAttending
     public Guid SessionId { get; set; }
     public KitSession Session { get; set; } = null!;
 
-    public DateTimeOffset RegisteredAt { get; set; }
-    public DateTimeOffset? CheckedInAt { get; set; }
+    public DateTime RegisteredAt { get; set; }
+    public DateTime? CheckedInAt { get; set; }
     public TimeSpan? TimeViewed { get; set; }
 
     public AttendingStatus Status { get; set; }

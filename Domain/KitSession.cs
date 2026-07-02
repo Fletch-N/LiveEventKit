@@ -15,7 +15,7 @@ public class KitSession : Auditable
     public Guid SpeakerId { get; set; }
     public KitUser Speaker { get; set; } = null!;
     public string? Sponsor { get; set; }
-    public DateTimeOffset StartTime { get; set; }
+    public DateTime StartTime { get; set; }
     public TimeSpan Duration { get; set; }
     public SessionAccessLevel AccessLevel { get; set; }
     public Uri? Image { get; set; }

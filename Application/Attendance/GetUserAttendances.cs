@@ -12,10 +12,10 @@ public static class GetUserAttendances
         Guid EventId,
         string Title,
         string Status,
-        DateTimeOffset StartTime,
+        DateTime StartTime,
         TimeSpan Duration,
-        DateTimeOffset RegisteredAt,
-        DateTimeOffset? CheckedInAt);
+        DateTime RegisteredAt,
+        DateTime? CheckedInAt);
 
     public sealed class Handler(IApplicationDbContext context)
     {

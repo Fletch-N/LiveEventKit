@@ -17,7 +17,7 @@ public static class UpdateSession
         public UpdateField<string> Description { get; init; }
         public UpdateField<string> Category { get; init; }
         public UpdateField<string?> Sponsor { get; init; }
-        public UpdateField<DateTimeOffset> StartTime { get; init; }
+        public UpdateField<DateTime> StartTime { get; init; }
         public UpdateField<TimeSpan> Duration { get; init; }
         public UpdateField<SessionAccessLevel> AccessLevel { get; init; }
         public UpdateField<string?> Image { get; init; }
@@ -31,7 +31,7 @@ public static class UpdateSession
         string Description,
         string Category,
         string? Sponsor,
-        DateTimeOffset StartTime,
+        DateTime StartTime,
         TimeSpan Duration,
         string AccessLevel,
         string? Image);
@@ -102,7 +102,7 @@ public static class UpdateSession
                 entity.Image = string.IsNullOrWhiteSpace(request.Image.Value) ? null : new Uri(request.Image.Value);
             }
 
-            entity.UpdatedAt = DateTimeOffset.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync(cancellationToken);
 

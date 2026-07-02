@@ -11,8 +11,8 @@ public static class GetEvent
         Guid Id,
         string Title,
         string Description,
-        DateTimeOffset StartDate,
-        DateTimeOffset EndDate);
+        DateTime StartDate,
+        DateTime EndDate);
 
     public sealed class Handler(IApplicationDbContext context)
     {
