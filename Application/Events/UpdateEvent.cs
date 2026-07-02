@@ -7,13 +7,15 @@ namespace Application.Events;
 
 public static class UpdateEvent
 {
-    public sealed record Request(
-        Guid Id,
-        UpdateField<string> Title = default,
-        UpdateField<string> Description = default,
-        UpdateField<string?> Image = default,
-        UpdateField<DateTimeOffset> StartDate = default,
-        UpdateField<DateTimeOffset> EndDate = default);
+    public sealed record Request
+    {
+        public Guid Id { get; init; }
+        public UpdateField<string> Title { get; init; }
+        public UpdateField<string> Description { get; init; }
+        public UpdateField<string?> Image { get; init; }
+        public UpdateField<DateTimeOffset> StartDate { get; init; }
+        public UpdateField<DateTimeOffset> EndDate { get; init; }
+    }
 
     public sealed record Response(
         Guid Id,

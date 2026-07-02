@@ -8,18 +8,20 @@ namespace Application.Sessions;
 
 public static class UpdateSession
 {
-    public sealed record Request(
-        Guid Id,
-        UpdateField<Guid> EventId = default,
-        UpdateField<Guid> SpeakerId = default,
-        UpdateField<string> Title = default,
-        UpdateField<string> Description = default,
-        UpdateField<string> Category = default,
-        UpdateField<string?> Sponsor = default,
-        UpdateField<DateTimeOffset> StartTime = default,
-        UpdateField<TimeSpan> Duration = default,
-        UpdateField<SessionAccessLevel> AccessLevel = default,
-        UpdateField<string?> Image = default);
+    public sealed record Request
+    {
+        public Guid Id { get; init; }
+        public UpdateField<Guid> EventId { get; init; }
+        public UpdateField<Guid> SpeakerId { get; init; }
+        public UpdateField<string> Title { get; init; }
+        public UpdateField<string> Description { get; init; }
+        public UpdateField<string> Category { get; init; }
+        public UpdateField<string?> Sponsor { get; init; }
+        public UpdateField<DateTimeOffset> StartTime { get; init; }
+        public UpdateField<TimeSpan> Duration { get; init; }
+        public UpdateField<SessionAccessLevel> AccessLevel { get; init; }
+        public UpdateField<string?> Image { get; init; }
+    }
 
     public sealed record Response(
         Guid Id,

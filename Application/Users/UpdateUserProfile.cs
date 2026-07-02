@@ -7,20 +7,22 @@ namespace Application.Users;
 
 public static class UpdateUserProfile
 {
-    public sealed record Request(
-        Guid Id,
-        UpdateField<string> FirstName = default,
-        UpdateField<string> LastName = default,
-        UpdateField<string?> Bio = default,
-        UpdateField<string?> Industry = default,
-        UpdateField<string?> Organization = default,
-        UpdateField<string?> Title = default,
-        UpdateField<string?> Country = default,
-        UpdateField<string?> State = default,
-        UpdateField<string?> City = default,
-        UpdateField<string?> Interests = default,
-        UpdateField<string?> Pronouns = default,
-        UpdateField<string?> ProfileImage = default);
+    public sealed record Request
+    {
+        public Guid Id { get; init; }
+        public UpdateField<string> FirstName { get; init; }
+        public UpdateField<string> LastName { get; init; }
+        public UpdateField<string?> Bio { get; init; }
+        public UpdateField<string?> Industry { get; init; }
+        public UpdateField<string?> Organization { get; init; }
+        public UpdateField<string?> Title { get; init; }
+        public UpdateField<string?> Country { get; init; }
+        public UpdateField<string?> State { get; init; }
+        public UpdateField<string?> City { get; init; }
+        public UpdateField<string?> Interests { get; init; }
+        public UpdateField<string?> Pronouns { get; init; }
+        public UpdateField<string?> ProfileImage { get; init; }
+    }
 
     public sealed record Response(
         Guid Id,
